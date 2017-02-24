@@ -15,12 +15,16 @@ Lispy supports an interactive environment over client's terminal as discussed be
 ```sh
 pip install rlispy
 ```
+Or
+```sh
+git clone https://github.com/ridwanmsharif/lispy
+```
 
 ## Usage
 
 To begin using the environment, enter Lispy directory and run:
 ```sh
-$ python lispy/lis.py
+$ python rlispy/lis.py
 ```
 
 Note: Enter one valid Scheme command at a time
@@ -36,19 +40,19 @@ Code: quit
 ## Examples
 Defining constants
 ```sh
-Code: (define const 'Constant')
+Code: (define const 1)
 Code: const
-Constant
+1
 ```
 
 Defining and changing variables
 ```sh
-Code: (define var 'Variable')
+Code: (define var 1)
 Code: var
-Variable
-Code: (set! var 'New variable')
+1
+Code: (set! var 2)
 Code: var
-New variable
+2
 ```
 
 Basic Operations
