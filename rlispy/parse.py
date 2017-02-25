@@ -11,6 +11,12 @@ import re, sys, StringIO
 
 # Class for LISP common symbols
 class Symbol(str): pass
+Symbol = str
+List   = list
+Number = (int, float)
+
+# Class for LISP common symbols
+class _Symbol(str): pass
 
 symbol_table = {}
 
