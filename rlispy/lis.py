@@ -22,7 +22,7 @@ def repl(prompt='Code: '):
 
 # Convert a Python object back into a Scheme-readable string.
 def schemestr(exp):
-    if isinstance(exp, List):
+    if isinstance(exp, list):
         return '(' + ' '.join(map(schemestr, exp)) + ')' 
     else:
         return str(exp)

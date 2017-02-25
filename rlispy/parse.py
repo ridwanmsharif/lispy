@@ -5,12 +5,12 @@ import re, sys, StringIO
 
 # A Scheme List is implemented as a Python list
 # A Scheme Number is implemented as a Python int or float
-Symbol = str
-List   = list
-Number = (int, float)
+# Symbol = str
+# List   = list
+# Number = (int, float)
 
 # Class for LISP common symbols
-class _Symbol(str): pass
+class Symbol(str): pass
 
 symbol_table = {}
 
