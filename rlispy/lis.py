@@ -1,5 +1,16 @@
 from eval import *
 
+_quote = Sym('quote')
+_if = Sym('if')
+_set = Sym('set!')
+_define = Sym('define')
+_lambda = Sym('lambda')
+_begin = Sym('begin')
+_definemacro = Sym('define-macro')
+_quasiquote = Sym('quasiquote')
+_unquoto = Sym('unquote')
+_unquotesplicing = Sym('unquote-splicing')
+
 # A prompt-read-eval-print loop.
 def repl(prompt='Code: '):
     while True:

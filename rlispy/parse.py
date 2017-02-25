@@ -1,5 +1,36 @@
 # Parsing Module
 
+from __future__ import division
+import re, sys, StringIO
+
+# A Scheme List is implemented as a Python list
+# A Scheme Number is implemented as a Python int or float
+Symbol = str
+List   = list
+Number = (int, float)
+
+# Class for LISP common symbols
+class _Symbol(str): pass
+
+symbol_table = {}
+
+# Find or create unique Symbol entry for str s in symbol table
+def Sym(s):
+    if s not in symbol_table: 
+        symbol_table[s] = Symbol(s)
+    return symbol_table[s]
+
+_quote = Sym('quote')
+_if = Sym('if')
+_set = Sym('set!')
+_define = Sym('define')
+_lambda = Sym('lambda')
+_begin = Sym('begin')
+_definemacro = Sym('define-macro')
+_quasiquote = Sym('quasiquote')
+_unquoto = Sym('unquote')
+_unquotesplicing = Sym('unquote-splicing')
+
 # Tokenize input string.
 def tokenize(code):
     return code.replace('(', ' ( ').replace(')', ' ) ').split()
@@ -31,11 +62,4 @@ def atom(token):
 # Read a Scheme expression from a string.
 def parse(code):
     return read_from_tokens(tokenize(code))
-
-# A Scheme Symbol is implemented as a Python str
-# A Scheme List is implemented as a Python list
-# A Scheme Number is implemented as a Python int or float
-Symbol = str
-List   = list
-Number = (int, float)
 
