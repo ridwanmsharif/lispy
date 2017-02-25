@@ -3,8 +3,8 @@
 from parse import *
 import math
 import operator as op
-
-
+    
+   
 # A user-defined Scheme procedure.
 class Procedure(object):
     def __init__(self, parms, body, env):
@@ -65,26 +65,37 @@ def standard_env():
 
 global_env = standard_env()
 
+_quote = Sym('quote')
+_if = Sym('if')
+_set = Sym('set!')
+_define = Sym('define')
+_lambda = Sym('lambda')
+_begin = Sym('begin')
+_definemacro = Sym('define-macro')
+_quasiquote = Sym('quasiquote')
+_unquoto = Sym('unquote')
+_unquotesplicing = Sym('unquote-splicing')
+
 # Evaluate an expression in an environment.
 def eval(x, env=global_env):
     if isinstance(x, Symbol): # variable reference
         return env.find(x)[x]
     elif not isinstance(x, List): # constant literal
         return x                
-    elif x[0] == 'quote': # quotation
+    elif x[0] == _quote: # quotation
         (_, exp) = x
         return exp
-    elif x[0] == 'if': # conditional
+    elif x[0] == _if: # conditional
         (_, test, conseq, alt) = x
         exp = (conseq if eval(test, env) else alt)
         return eval(exp, env)
-    elif x[0] == 'define': # definition
+    elif x[0] == _define: # definition
         (_, var, exp) = x
         env[var] = eval(exp, env)
-    elif x[0] == 'set!': # assignment
+    elif x[0] == _set: # assignment
         (_, var, exp) = x
         env.find(var)[var] = eval(exp, env)
-    elif x[0] == 'lambda': # procedure
+    elif x[0] == _lambda: # procedure
         (_, parms, body) = x
         return Procedure(parms, body, env)
     else: # procedure call
