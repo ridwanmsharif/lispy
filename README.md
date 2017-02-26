@@ -64,7 +64,6 @@ Code: (* (+ 1 1) (/ (- 5 3) 2))
 2
 ```
 
-Lets have some fun shall we.
 Defining functiona and using lambda calculus
 ```sh
 Code: (define factorial 
@@ -80,11 +79,11 @@ Code: (factorial -10)
 1
 ```
 
-Good enough for now? Alright then
+Quit command to exit Lispy 2.0
 ```sh
 Code: quit
 
-$ sudo go-about-your-business-now
+$
 ```
 
 ## Disclaimer
