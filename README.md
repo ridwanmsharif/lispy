@@ -1,4 +1,4 @@
-# lispy (Python)
+# lispy 
 
 Interpreter for Scheme (A dialect of LISP) in Python.
 Contains two modules that cover tokenizing, parsing, loading environments and evaluating valid Scheme code input.
@@ -10,6 +10,8 @@ Those include but are not confined to: Data Structures, Macros, error detection,
 For now, lispy can deal with primitive and abstract functions, mathematical operations, primitive data structures (Number, Strings, lists) and supports algorithms designed with these restrictions.
 Memory allocation and garbage collection are handled by python's architecture.
 Lispy supports an interactive environment over client's terminal as discussed below
+
+UPDATE: Lispy is now optimized to deal with strings and comments
 
 ## Setup
 ```sh
@@ -40,19 +42,19 @@ Code: quit
 ## Examples
 Defining constants
 ```sh
-Code: (define const 1)
+Code: (define const "Constant")
 Code: const
-1
+"Constant"
 ```
 
 Defining and changing variables
 ```sh
-Code: (define var 1)
+Code: (define var "Variable")
 Code: var
-1
-Code: (set! var 2)
+"Variable"
+Code: (set! var "Variable")
 Code: var
-2
+"Variable"
 ```
 
 Basic Operations

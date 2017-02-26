@@ -37,11 +37,16 @@ _quasiquote = Sym('quasiquote')
 _unquoto = Sym('unquote')
 _unquotesplicing = Sym('unquote-splicing')
 
-# Tokenize input string.
+# Tokenize input string
+# Seperate special characters [" ( ) ;) from expression
+# Tokens split by spaces
 def tokenize(code):
-    return code.replace('(', ' ( ').replace(')', ' ) ').split()
+    code = code.replace('(', ' ( ').replace(')', ' ) ')
+    code = code.replace('\"', ' \" ').replace(';', ' ;').split()
+    return code
 
-# Read an expression from a sequence of tokens.
+# Read an expression from a sequence of tokens
+# Tokenize and parse strings and comments as quotes
 def read_from_tokens(tokens):
     if len(tokens) == 0:
         raise SyntaxError('unexpected EOF while reading')
@@ -52,6 +57,27 @@ def read_from_tokens(tokens):
             L.append(read_from_tokens(tokens))
         tokens.pop(0)
         return L
+
+    elif '"' == token:
+        L = []
+        while tokens[0] != '"':
+            L.append(read_from_tokens(tokens))
+        end_quote = tokens.pop(0)
+        string = token
+        string += " ".join(L)
+        string += end_quote
+        return ['quote',  string]
+    
+    elif ';' == token:
+        L = []
+        L.append(token)
+        while tokens[0] != '\n':
+            L.append(read_from_tokens(tokens))
+        new_line = tokens.pop(0)
+        L.append(new_line)
+        string = " ".join(L)
+        return ['quote', string]
+
     elif ')' == token:
         raise SyntaxError('unexpected )')
     else:
@@ -69,3 +95,5 @@ def atom(token):
 def parse(code):
     return read_from_tokens(tokenize(code))
 
+#print(parse("(define factorial (lambda (x) (if (<= x 1) 1 (* x (factorial (- x 1)))))); please work"))
+#print(parse("(define string \"LOL\")"))
