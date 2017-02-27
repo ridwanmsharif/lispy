@@ -24,6 +24,24 @@ class Env(dict):
     def find(self, var):
         return self if (var in self) else self.outer.find(var)
 
+# Manual definition of foldr
+def foldr(combine, base, lst):
+    if len(lst) == 0:
+        return base
+    else:
+        value = combine(lst[0], foldr(combine, base, lst[1:]))
+        return value
+
+# Manual definition of foldl
+def foldl(combine, acc, lst):
+    if len(lst) == 0:
+        return acc
+    else:
+       return  foldl(
+                combine,
+                combine(acc, lst[0]),
+                lst[1:]
+                )
 
 # An environment with some Scheme standard procedures."
 def standard_env():
@@ -54,6 +72,8 @@ def standard_env():
         'map':     map,
         'max':     max,
         'filter':   filter,
+        'foldr':    foldr,
+        'foldl':    foldl,
         'min':     min,
         'not':     op.not_,
         'null?':   lambda x: x == [], 
