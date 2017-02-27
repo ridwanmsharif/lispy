@@ -36,6 +36,8 @@ _definemacro = Sym('define-macro')
 _quasiquote = Sym('quasiquote')
 _unquoto = Sym('unquote')
 _unquotesplicing = Sym('unquote-splicing')
+_checkexpect = Sym('check-expect')
+_checkwithin = Sym('check-within')
 
 # Tokenize input string
 # Seperate special characters [" ( ) ;) from expression

@@ -53,6 +53,7 @@ def standard_env():
         'list?':   lambda x: isinstance(x,list), 
         'map':     map,
         'max':     max,
+        'filter':   filter,
         'min':     min,
         'not':     op.not_,
         'null?':   lambda x: x == [], 
@@ -75,6 +76,9 @@ _definemacro = Sym('define-macro')
 _quasiquote = Sym('quasiquote')
 _unquoto = Sym('unquote')
 _unquotesplicing = Sym('unquote-splicing')
+_checkexpect = Sym('check-expect')
+_checkwithin = Sym('check-within')
+_member = Sym('member?')
 
 # Evaluate an expression in an environment.
 def eval(x, env=global_env):
@@ -98,6 +102,16 @@ def eval(x, env=global_env):
     elif x[0] == _lambda: # procedure
         (_, parms, body) = x
         return Procedure(parms, body, env)
+    elif x[0]== _checkexpect: # test exact
+        (_, var, exp) = x
+        return (eval(var) == eval(exp))
+    elif x[0] == _checkwithin: # test range
+        (_, var, lower_bound, upper_bound) = x
+        return ((eval(var) <= eval(upper_bound) and
+                (eval(var) >= eval(lower_bound))))
+    elif x[0] == _member: # member?
+        (_, var, lst) = x
+        return (eval(var) in eval(lst))
     else: # procedure call
         proc = eval(x[0], env)
         args = [eval(arg, env) for arg in x[1:]]
