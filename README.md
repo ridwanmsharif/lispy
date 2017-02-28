@@ -4,15 +4,37 @@ Interpreter for Scheme (A dialect of LISP) in Python.
 Contains two modules that cover tokenizing, parsing, loading environments and evaluating valid Scheme code input.
 Closely following [Peter Norvig](http://norvig.com/)'s [implementation](http://norvig.com/lispy.html) to get started. 
 Covers primitive keywords and syntactic and procedure calls.
-A more complete LISP interpreter is what I hope to build on top of this and I intend to closely follow Norvig's thorough [interpreter](http://norvig.com/lispy2.html) to account for all the missing calls.
-Those include but are not confined to: Data Structures, Macros, error detection, call/cc, syntax and more.
+A more complete LISP interpreter is what I hope to build on top of this and I intend to closely follow Norvig's thorough [interpreter](http://norvig.com/lispy2.html). I have worked independantly to include and cover features inpired by Racket (A dialect of Scheme)
+we'd been taught this past semester in CS135 at University of Waterloo.
 
-For now, lispy can deal with primitive and abstract functions, mathematical operations, primitive data structures (Number, Strings, lists) and supports algorithms designed with these restrictions.
+## Coverage
+Lispy is currently a lightweight interpreter that can deal with primitive and other non-primitive essentials of Scheme.
+These are but not confined to the following:
+
++ Mathematical operators (Infix)
++ Primitive data structures (Number (Integers) , Strings, lists)
++ String literals and comments ("", ;;)
++ Procedure calls/Functions using lambda calculus
++ Abstract list functions (foldl, foldr, map, filter)
++ Supports algorithms designed with these restrictions
++ Interactive interface with minimalistic error handling
+
 Memory allocation and garbage collection are handled by python's architecture.
 Lispy supports an interactive environment over client's terminal as discussed below
 
-UPDATE: Lispy is now optimized to deal with string literals
-comments and error handling
+TODO: Currently working to build procedure and evaluation definitions to support 
+structures, struct functions and predicates.
+The general strategy I've opted to go forward with so to avoid tampering with existing
+tokenization is to identify struct commands during evaluation of parsed tokens.
+Following this, I intend to use either named tuples from the collections library
+or fixed length arrays with elements as fields. The idea is that any struct call to 
+fields can correspond to index locations in the array.
+Therefore each index location will correspond to a specefic field which will corresspond
+to a 'struct-field' auto-created function. This function will act as a placeholder and 
+a key in the environment and will be pushed along with its value - the index.
+When this procedure is called, its lambda function will call for an array to be passed
+and the index of the given array is then returned.
+Thus emulating a struct in Scheme.
 
 ## Setup
 ```sh
@@ -64,7 +86,7 @@ Code: (* (+ 1 1) (/ (- 5 3) 2))
 2
 ```
 
-Defining functiona and using lambda calculus
+Defining functions and using lambda calculus
 ```sh
 Code: (define factorial 
           (lambda (x)
@@ -77,6 +99,31 @@ Code: (factorial 2)
 2
 Code: (factorial -10)
 1
+Code: (check-expect (factorial 3) 6)
+True
+Code: (check-within (factorial 3) (factorial 2) (factorial 4))
+True
+```
+
+Using abstract list functions
+```sh
+Code: (define lst (list 1 2 3))
+Code: lst
+(1 2 3)
+Code: (member? 2 lst)
+True
+Code: (member? 4 lst)
+False
+Code: (map (lambda (elem) (+ 1 elem)) lst)
+(2 3 4)
+Code: (foldr + 0 lst)
+6
+Code: (foldr (lambda (x rest) (cons x rest)) (list) lst)
+(1 2 3)
+Code: (foldl (lambda (x acc) (cons acc x)) (list) lst)
+(3 2 1)
+Code: (filter (lambda (x) (>= x 2)) lst)
+(2 3)
 ```
 
 Quit command to exit Lispy 2.0
