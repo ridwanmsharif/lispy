@@ -12,10 +12,12 @@ _unquoto = Sym('unquote')
 _unquotesplicing = Sym('unquote-splicing')
 _checkexpect = Sym('check-expect')
 _checkwithin = Sym('check-within')
+_member = Sym('member?')
+_struct = Sym('struct')
 
 # A prompt-read-eval-print loop.
 def repl(prompt='Code: '):
-    print("Lispy Version 2.0\n Get Coding!\n")
+    print("Lispy Version 3.0\n Get Coding!\n")
     while True:
         inpt = raw_input(prompt)
         try:

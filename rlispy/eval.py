@@ -99,7 +99,29 @@ _unquotesplicing = Sym('unquote-splicing')
 _checkexpect = Sym('check-expect')
 _checkwithin = Sym('check-within')
 _member = Sym('member?')
+_struct = Sym('struct')
 
+# Make predicates and field functions of a user defined struct
+def make_functions(name, param, env=global_env):
+    create = 'make-' + name
+    check = name + '?'
+    index_array = []
+    key_array = []
+    i = 0
+    for par in param:
+        index_array.append(i)
+        i += 1
+        
+    for par in param:
+        key_array.append(name + '-' + par + '-pos')
+
+    env.update(zip(key_array, index_array))
+    
+    env[name + '-pos'] = lambda arr, index: arr[index]
+
+    env[check] = lambda arr: len(arr) == eval(create)
+    env[create] = len(param)
+    
 # Evaluate an expression in an environment.
 def eval(x, env=global_env):
     if isinstance(x, Symbol): # variable reference
@@ -124,16 +146,28 @@ def eval(x, env=global_env):
         return Procedure(parms, body, env)
     elif x[0]== _checkexpect: # test exact
         (_, var, exp) = x
-        return (eval(var) == eval(exp))
+        return (eval(var, env) == eval(exp, env))
     elif x[0] == _checkwithin: # test range
         (_, var, lower_bound, upper_bound) = x
-        return ((eval(var) <= eval(upper_bound) and
-                (eval(var) >= eval(lower_bound))))
+        return ((eval(var, env) <= eval(upper_bound, env) and
+                (eval(var, env) >= eval(lower_bound, env))))
     elif x[0] == _member: # member?
         (_, var, lst) = x
-        return (eval(var) in eval(lst))
+        return (eval(var, env) in eval(lst, env))
+    elif x[0] == _struct: # struct definition
+        (_, name, params) = x
+        make_functions(name, params, env)
     else: # procedure call
         proc = eval(x[0], env)
-        args = [eval(arg, env) for arg in x[1:]]
+        if ( isinstance(x[0], str) and 
+             x[0].startswith('make-')):
+            args = [eval(arg, env) for arg in x[2:]]
+            if len(args) != proc: 
+                print('TypeError: ' + x[0] + ' requires %d values, given %d' % (proc,  len(args)))
+            else:
+                env[x[1]] = args
+            return
+        else: 
+            args = [eval(arg, env) for arg in x[1:]]
         return proc(*args)
 

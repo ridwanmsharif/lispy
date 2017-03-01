@@ -38,6 +38,8 @@ _unquoto = Sym('unquote')
 _unquotesplicing = Sym('unquote-splicing')
 _checkexpect = Sym('check-expect')
 _checkwithin = Sym('check-within')
+_member = Sym('member?')
+_struct = Sym('struct')
 
 # Tokenize input string
 # Seperate special characters [" ( ) ;) from expression

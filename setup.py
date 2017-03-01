@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name = 'rlispy',
     packages = ['rlispy'], # this must be the same as the name above
-    version = '2.0',
+    version = '3.0',
     description = 'LISP interpreter in Python',
     author = 'Ridwan Sharif',
     author_email = 'ridwanmsharif@hotmail.com',
