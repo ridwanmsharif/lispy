@@ -43,20 +43,69 @@ def foldl(combine, acc, lst):
                 lst[1:]
                 )
 
+#there don't have apply in python3, so I need to define one
+def apply(proc, *args, **kwargs):
+    return proc(*args, **kwargs)
+
+#define multiobjective arithmetic operators here
+def _add(*operands):
+    result = 0
+    for operand in operands:
+        result = result + operand
+    return result
+
+def _sub(*operands):
+    result = 0
+    for operand in operands:
+        if len(operands) > 1 and result == 0:
+            result = operand
+        else: result = result - operand
+    return result
+
+def _mul(*operands):
+    result = 1
+    for operand in operands:
+        result = result * operand
+    return result
+
+def _truediv(*operands):
+    result = 1
+    for operand in operands:
+        #first step in truediv, we need to let the first num in our operands tuple to be our dividend
+        if result == 1:
+            result = operand
+        else: result = result / operand
+        #and if divisor is 0, python will throw appropriate error to us
+    return result
+
+#define multiobjective logical operators here
+def _and(*args):
+    result = True
+    for arg in args:
+        result = result and arg
+    return result
+
+def _or(*args):
+    result = False
+    for arg in args:
+        result = result or arg
+    return result
 # An environment with some Scheme standard procedures."
 def standard_env():
     env = Env()
     env.update(vars(math))
     env.update({
-        '+':op.add, 
-        '-':op.sub, 
-        '*':op.mul, 
-        '/':op.div, 
+        '+':_add, 
+        '-':_sub, 
+        '*':_mul, 
+        '/':_truediv, 
         '>':op.gt,
         '<':op.lt,
         '>=':op.ge,
         '<=':op.le,
         '=':op.eq,
+        'and':_and,
+        'or':_or,
         'abs': abs,
         'append': op.add,
         'apply': apply,

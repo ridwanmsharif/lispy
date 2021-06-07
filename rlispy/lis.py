@@ -19,14 +19,14 @@ _struct = Sym('struct')
 def repl(prompt='Code: '):
     print("Lispy Version 3.0\n Get Coding!\n")
     while True:
-        inpt = raw_input(prompt)
+        inpt = input(prompt)
         try:
             if inpt == "quit": break
             val = eval(parse(inpt))
             if val is not None: 
                 print(schemestr(val))
         except Exception as e:
-                print '%s: %s' % (type(e).__name__, e)
+                print ('%s: %s' % (type(e).__name__, e))
 
 # Convert a Python object back into a Scheme-readable string.
 def schemestr(exp):
