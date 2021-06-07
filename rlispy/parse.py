@@ -1,7 +1,7 @@
 # Parsing Module
 
 from __future__ import division
-import re, sys, StringIO
+import re, sys
 
 # A Scheme List is implemented as a Python list
 # A Scheme Number is implemented as a Python int or float
